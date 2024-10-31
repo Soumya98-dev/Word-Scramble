@@ -28,9 +28,10 @@ struct ContentView: View {
                     }
                 }
             }
+            .navigationTitle(rootWord)
         }
-        .navigationTitle(rootWord)
         .onSubmit(addNewWord)
+        .onAppear(perform: startGame)
     }
     /*
     1. Lowercase newWord and remove any whitesapce
@@ -49,6 +50,25 @@ struct ContentView: View {
         
         newWord = ""
         
+    }
+    /*
+     1. Find start.txt in my bundle
+     2. Load it into a string
+     3. Split that string into array of strings with each element being one word
+     4. Pick one random default to be added to the rootWord; or default if array -> empty
+     */
+    func startGame(){
+        if let startsWordURL = Bundle.main.url(forResource: "start", withExtension:"txt"){
+            if let startWords = try? String(contentsOf: startsWordURL, encoding: .utf8){
+                let allWords = startWords.components(separatedBy: "\n")
+                
+                rootWord = allWords.randomElement() ?? "silkWorm"
+                print("Loaded root word: \(rootWord)")
+                return
+            }
+        }
+        
+        fatalError("Could not load start.txt from bundle")
     }
 
 }
