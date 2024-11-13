@@ -34,8 +34,17 @@ struct ContentView: View {
 
                     }
                 }
+                
             }
             .navigationTitle(rootWord)
+            .toolbar{
+                ToolbarItem(placement: .navigationBarTrailing){
+                    Button("Start new Game"){
+                        startGame()
+                    }
+                }
+            }
+
         }
         .onSubmit(addNewWord)
         .onAppear(perform: startGame)
@@ -45,6 +54,7 @@ struct ContentView: View {
             Text(errorMessage)
         }
     }
+
     /*
     1. Lowercase newWord and remove any whitesapce
     2. Check if newWord to be added have atleast 1 charac otherwise exit
@@ -54,11 +64,17 @@ struct ContentView: View {
     func addNewWord() {
         let answer = newWord.lowercased().trimmingCharacters(
             in: .whitespacesAndNewlines)
-
-        guard answer.count > 0 else { return }
-
         
-
+        guard answer.count > 2 else {
+            wordError(title: "New word should be greater than 2", message: "")
+            return
+        }
+        
+        guard answer != rootWord else {
+            wordError(title: "Can't be same like the start word", message: "")
+            return
+        }
+        
 //        newWord = ""
         
         guard isOriginal(word:answer) else{
