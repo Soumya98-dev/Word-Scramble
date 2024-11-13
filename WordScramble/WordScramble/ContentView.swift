@@ -12,6 +12,7 @@ struct ContentView: View {
     @State private var usedWords = [String]()
     @State private var rootWord = ""
     @State private var newWord = ""
+    @State private var playerScore = 0
 
     //For showing error alerts
     @State private var errorTitle = ""
@@ -34,7 +35,6 @@ struct ContentView: View {
 
                     }
                 }
-                
             }
             .navigationTitle(rootWord)
             .toolbar{
@@ -53,6 +53,7 @@ struct ContentView: View {
         } message: {
             Text(errorMessage)
         }
+        Text("Score: \(playerScore)")
     }
 
     /*
@@ -95,6 +96,8 @@ struct ContentView: View {
         withAnimation {
             usedWords.insert(answer, at: 0)
         }
+        
+        playerScore = playerScore + 1
 
     }
     /*
@@ -117,6 +120,9 @@ struct ContentView: View {
                 return
             }
         }
+        
+//        wordError(title: "Your final score is \(playerScore)", message: "")
+        playerScore = 0
 
         fatalError("Could not load start.txt from bundle")
     }
